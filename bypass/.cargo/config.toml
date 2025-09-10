@@ -1,0 +1,6 @@
+# .cargo/config.toml
+
+[target.'cfg(windows)']
+rustflags = [
+  "-C", "link-arg=-Wl,--subsystem,windows"
+]

