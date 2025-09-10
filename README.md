@@ -34,3 +34,8 @@ img.exe hide your_img.jpg test.bin
 3.cargo build --release打包bypass程序，记得把output.png放到bypass/src/resources目录下，得到bypass.exe 
 
 4.点击bypass.exe即触发执行shellcode
+
+<img width="1926" height="1080" alt="image" src="https://github.com/user-attachments/assets/e8461c1c-2fa6-49e8-8007-356b123c2fd2" />
+可过卡巴斯基企业版免杀
+
+
